@@ -1,0 +1,17 @@
+credentials:
+  usernames:
+    kufopo:
+      email: kufopo@gmail.com
+      name: Kuforiji Femi
+      password: bakanakufopo
+    esther:
+      email: rbriggs@gmail.com
+      name: Esther Akinjisola
+      password: CSC/2022/033 # Will be hashed automatically
+cookie:
+  expiry_days: 30
+  key: achor
+  name: some_cookie_name
+preauthorized:
+  emails:
+    - kufopo@yahoo.com
