@@ -102,7 +102,7 @@ numpy==1.26.4
 onnx==1.16.1
 onnxruntime==1.20.1
 opencv-contrib-python==4.10.0.84
-opencv-python==4.10.0.84
+
 opencv-python-headless==4.10.0.84
 overrides==7.7.0
 packaging==23.2
