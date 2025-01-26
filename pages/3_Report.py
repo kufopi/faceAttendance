@@ -87,22 +87,33 @@ with tab3:
 
 with tab4:
     st.subheader('Attendance Percentage')
+
     # Ensure all_dates is defined in this scope
-    if 'all_dates' not in locals():
+    if 'all_dates' not in locals() and 'report_df' in locals():
         all_dates = report_df['Date'].unique()
 
-    # Calculate total classes held for each course by counting the teacher's attendance
-    total_classes_held = report_df[report_df['Role'] == 'Teacher'].groupby('Course').size().reset_index(
-        name='Total_Classes_Held')
+    if 'report_df' not in locals():
+        st.error("No report data found.")
+    else:
+        # Calculate total classes held for each course by counting the teacher's attendance
+        total_classes_held = report_df[report_df['Role'] == 'Teacher'].groupby('Course').size().reset_index(
+            name='Total_Classes_Held')
 
-    # Calculate student attendance for each course
-    student_attendance = \
-    date_name_role_course_zip_df[date_name_role_course_zip_df['Role'] == 'Student'].groupby(['Name', 'Course'])[
-        'Status'].apply(lambda x: (x == 'Present').sum()).reset_index(name='Days_Present')
+        print("Total Classes Held:")
+        print(total_classes_held)
 
-    # Merge to calculate attendance percentage
-    attendance_summary = pd.merge(student_attendance, total_classes_held, on='Course', how='left')
-    attendance_summary['Attendance_Percentage'] = (attendance_summary['Days_Present'] / attendance_summary[
-        'Total_Classes_Held']) * 100
+        # Calculate student attendance for each course
+        student_attendance = date_name_role_course_zip_df[date_name_role_course_zip_df['Role'] == 'Student'].groupby(['Name', 'Course'])['Status'].apply(lambda x: (x == 'Present').sum()).reset_index(name='Days_Present')
 
-    st.dataframe(attendance_summary)
+        print("Student Attendance:")
+        print(student_attendance)
+
+        # Merge to calculate attendance percentage
+        attendance_summary = pd.merge(student_attendance, total_classes_held, on='Course', how='left')
+        attendance_summary['Attendance_Percentage'] = (attendance_summary['Days_Present'] / attendance_summary['Total_Classes_Held']) * 100
+
+        print("Attendance Summary:")
+        print(attendance_summary)
+
+        st.dataframe(attendance_summary)
+
