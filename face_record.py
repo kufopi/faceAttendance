@@ -9,25 +9,50 @@ import time
 from sklearn.metrics import pairwise
 
 r = redis.Redis(
-    host='redis-17072.c341.af-south-1-1.ec2.redns.redis-cloud.com',
-    port = '17072',
-    password='zta6fLq1C3VqUq2ojtQB1sAU9xlWQW9y'
+    host='redis-17999.c341.af-south-1-1.ec2.redns.redis-cloud.com',
+    port = '17999',
+    password='ljJG3Iqp6voDDvTsy1SBG1Dm9qVEofk5'
 )
 
 # Retrieve Data from Database
 def retrieve_data():
     retrieve_dict = r.hgetall(name='NHS-free-db')
+    if not retrieve_dict:
+        print("No data found in Redis.")
+        return pd.DataFrame(columns=['Name', 'Role', 'Facial Features', 'Course'])  # Include 'Course' column
+
     retrieve_series = pd.Series(retrieve_dict)
-    # retrieve_series
-    ### Convert from bytes to dataframe
-    retrieve_series = retrieve_series.apply(lambda z: np.frombuffer(z,dtype=np.float32))
+    retrieve_series = retrieve_series.apply(lambda z: np.frombuffer(z, dtype=np.float32))
+
     index = retrieve_series.index
-    index = list(map(lambda q: q.decode(),index))
+    index = list(map(lambda q: q.decode(), index))
     retrieve_series.index = index
+
     retrieve_df = retrieve_series.to_frame().reset_index()
-    retrieve_df.columns=['Name_Role','Facial Features']
+    retrieve_df.columns = ['Name_Role', 'Facial Features']
+
+    # Add a debug statement to print the initial DataFrame
+    print("Initial DataFrame after retrieval and conversion:")
+    print(retrieve_df.head())
+
+    # Filter out rows where the split operation doesn't return exactly 2 elements
+    retrieve_df = retrieve_df[retrieve_df['Name_Role'].apply(lambda x: len(x.split('@')) == 2)]
+
+    # Apply the split
     retrieve_df[['Name', 'Role']] = retrieve_df['Name_Role'].apply(lambda x: x.split('@')).tolist()
-    return retrieve_df[['Name','Role','Facial Features']]
+
+    # Add a placeholder 'Course' column
+    retrieve_df['Course'] = 'Unknown'
+
+    return retrieve_df[['Name', 'Role', 'Facial Features', 'Course']]
+
+# Call the function to see the output
+print(retrieve_data())
+
+
+# Call the function to see the output
+print(retrieve_data())
+
 
 
 
