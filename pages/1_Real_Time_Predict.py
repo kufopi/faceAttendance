@@ -40,15 +40,31 @@ webrtc_streamer(
             {"urls": ["stun:stun.l.google.com:19302"]},
             {"urls": ["stun:stun1.l.google.com:19302"]},
             {"urls": ["stun:stun2.l.google.com:19302"]},
-        ]
+            {"urls": ["stun:stun3.l.google.com:19302"]},
+            {"urls": ["stun:stun4.l.google.com:19302"]},
+            {
+                "urls": ["turn:numb.viagenie.ca"],
+                "username": "webrtc@live.com",
+                "credential": "muazkh"
+            }
+        ],
+        "iceTransportPolicy": "all",
+        "bundlePolicy": "max-bundle",
+        "rtcpMuxPolicy": "require",
+        "iceCandidatePoolSize": 1,
     },
     media_stream_constraints={
         "video": {
-            "width": {"min": 480, "ideal": 480},
-            "height": {"min": 360, "ideal": 360},
-            "frameRate": {"max": 30},
+            "width": {"min": 320, "ideal": 480, "max": 640},
+            "height": {"min": 240, "ideal": 360, "max": 480},
+            "frameRate": {"ideal": 30, "max": 30},
         },
         "audio": False,
     },
     async_processing=True,
+    video_html_attrs={
+        "style": {"width": "100%", "margin": "0 auto", "border": "2px solid red"},
+        "controls": False,
+        "autoPlay": True,
+    },
 )
