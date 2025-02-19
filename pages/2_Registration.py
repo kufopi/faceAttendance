@@ -28,13 +28,42 @@ def video_callback_func(frame):
             np.savetxt(f,embedding)
 
     return av.VideoFrame.from_ndarray(reg_img,format='bgr24')
-webrtc_streamer(key="realtimePrediction", video_frame_callback=video_callback_func,
+webrtc_streamer(
+    key="realtimePrediction",  # or "registration" for registration page
+    video_frame_callback=video_callback_func,
     rtc_configuration={
         "iceServers": [
-            {"urls": ["stun:stun.l.google.com:19302"]}
-        ]
+            {"urls": ["stun:stun.l.google.com:19302"]},
+            {"urls": ["stun:stun1.l.google.com:19302"]},
+            {"urls": ["stun:stun2.l.google.com:19302"]},
+            {"urls": ["stun:stun3.l.google.com:19302"]},
+            {"urls": ["stun:stun4.l.google.com:19302"]},
+            {
+                "urls": ["turn:numb.viagenie.ca"],
+                "username": "webrtc@live.com",
+                "credential": "muazkh"
+            }
+        ],
+        "iceTransportPolicy": "all",
+        "bundlePolicy": "max-bundle",
+        "rtcpMuxPolicy": "require",
+        "iceCandidatePoolSize": 1,
     },
-    media_stream_constraints={"video": True, "audio": False})
+    media_stream_constraints={
+        "video": {
+            "width": {"min": 320, "ideal": 480, "max": 640},
+            "height": {"min": 240, "ideal": 360, "max": 480},
+            "frameRate": {"ideal": 30, "max": 30},
+        },
+        "audio": False,
+    },
+    async_processing=True,
+    video_html_attrs={
+        "style": {"width": "100%", "margin": "0 auto", "border": "2px solid red"},
+        "controls": False,
+        "autoPlay": True,
+    },
+)
 
 if st.button('Submit'):
     return_val = registration_form.save_data_in_redis(personName,role)
