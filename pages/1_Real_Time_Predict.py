@@ -4,6 +4,17 @@ from home import face_record
 from streamlit_webrtc import webrtc_streamer
 import av
 import time
+import logging
+import sys
+
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
 
 st.subheader("Real Time Prediction")
 
@@ -31,6 +42,12 @@ def video_frame_callback(frame):
         print('Saved Data to Redis')
 
     return av.VideoFrame.from_ndarray(predd_img, format="bgr24")
+
+st.set_page_config(
+    page_title="Video Stream",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 webrtc_streamer(
     key="realtimePrediction",  # or "registration" for registration page
