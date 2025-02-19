@@ -32,4 +32,10 @@ def video_frame_callback(frame):
 
     return av.VideoFrame.from_ndarray(predd_img, format="bgr24")
 
-webrtc_streamer(key="realtimePrediction", video_frame_callback=video_frame_callback)
+webrtc_streamer(key="realtimePrediction", video_frame_callback=video_frame_callback,
+    rtc_configuration={
+        "iceServers": [
+            {"urls": ["stun:stun.l.google.com:19302"]}
+        ]
+    },
+    media_stream_constraints={"video": True, "audio": False})
