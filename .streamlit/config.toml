@@ -1,7 +1,18 @@
 [server]
 enableXsrfProtection = false
 enableCORS = false
+enableWebsocketCompression = false
+maxUploadSize = 5
+maxMessageSize = 50
 
 [browser]
 serverAddress = "0.0.0.0"
 serverPort = 8501
+gatherUsageStats = false
+
+[theme]
+base = "light"
+
+[client]
+toolbarMode = "minimal"
+showErrorDetails = true
