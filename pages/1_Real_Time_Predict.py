@@ -43,11 +43,7 @@ def video_frame_callback(frame):
 
     return av.VideoFrame.from_ndarray(predd_img, format="bgr24")
 
-st.set_page_config(
-    page_title="Video Stream",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+
 
 webrtc_streamer(
     key="realtimePrediction",  # or "registration" for registration page
