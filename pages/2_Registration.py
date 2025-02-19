@@ -4,6 +4,8 @@ import numpy as np
 import av
 from streamlit_webrtc import webrtc_streamer
 from face_record import RegistrationForm
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 st.set_page_config(page_title="Registration Form..",layout='wide')
 st.subheader("Registration Page")
