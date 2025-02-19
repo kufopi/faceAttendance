@@ -26,26 +26,13 @@ def video_callback_func(frame):
             np.savetxt(f,embedding)
 
     return av.VideoFrame.from_ndarray(reg_img,format='bgr24')
-webrtc_streamer(
-    key="realtimePrediction",  # or "registration" for registration page
-    video_frame_callback=video_frame_callback,
+webrtc_streamer(key="realtimePrediction", video_frame_callback=video_frame_callback,
     rtc_configuration={
         "iceServers": [
-            {"urls": ["stun:stun.l.google.com:19302"]},
-            {"urls": ["stun:stun1.l.google.com:19302"]},
-            {"urls": ["stun:stun2.l.google.com:19302"]},
+            {"urls": ["stun:stun.l.google.com:19302"]}
         ]
     },
-    media_stream_constraints={
-        "video": {
-            "width": {"min": 480, "ideal": 480},
-            "height": {"min": 360, "ideal": 360},
-            "frameRate": {"max": 30},
-        },
-        "audio": False,
-    },
-    async_processing=True,
-)
+    media_stream_constraints={"video": True, "audio": False})
 
 if st.button('Submit'):
     return_val = registration_form.save_data_in_redis(personName,role)
