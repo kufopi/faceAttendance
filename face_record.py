@@ -9,9 +9,9 @@ import time
 from sklearn.metrics import pairwise
 
 r = redis.Redis(
-    host='redis-17999.c341.af-south-1-1.ec2.redns.redis-cloud.com',
-    port = '17999',
-    password='ljJG3Iqp6voDDvTsy1SBG1Dm9qVEofk5'
+    host='redis-12590.c8.us-east-1-2.ec2.redns.redis-cloud.com',
+    port = '12590',
+    password='QaC4ZwTRbTUDJWFMyhgsHpwSvtz2oz4h'
 )
 
 # Retrieve Data from Database
